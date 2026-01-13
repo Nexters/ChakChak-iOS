@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		370E33A82F0FD67E00CE0A0D /* ChakChak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChakChak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		370E33A82F0FD67E00CE0A0D /* Chac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		370E33AA2F0FD67E00CE0A0D /* ChakChak */ = {
+		370E33AA2F0FD67E00CE0A0D /* Chac */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ChakChak;
+			path = Chac;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +32,7 @@
 		370E339F2F0FD67E00CE0A0D = {
 			isa = PBXGroup;
 			children = (
-				370E33AA2F0FD67E00CE0A0D /* ChakChak */,
+				370E33AA2F0FD67E00CE0A0D /* Chac */,
 				370E33A92F0FD67E00CE0A0D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,7 +40,7 @@
 		370E33A92F0FD67E00CE0A0D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				370E33A82F0FD67E00CE0A0D /* ChakChak.app */,
+				370E33A82F0FD67E00CE0A0D /* Chac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		370E33A72F0FD67E00CE0A0D /* ChakChak */ = {
+		370E33A72F0FD67E00CE0A0D /* Chac */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 370E33B32F0FD68000CE0A0D /* Build configuration list for PBXNativeTarget "ChakChak" */;
+			buildConfigurationList = 370E33B32F0FD68000CE0A0D /* Build configuration list for PBXNativeTarget "Chac" */;
 			buildPhases = (
 				370E33A42F0FD67E00CE0A0D /* Sources */,
 				370E33A52F0FD67E00CE0A0D /* Frameworks */,
@@ -61,13 +61,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				370E33AA2F0FD67E00CE0A0D /* ChakChak */,
+				370E33AA2F0FD67E00CE0A0D /* Chac */,
 			);
-			name = ChakChak;
+			name = Chac;
 			packageProductDependencies = (
 			);
 			productName = ChakChak;
-			productReference = 370E33A82F0FD67E00CE0A0D /* ChakChak.app */;
+			productReference = 370E33A82F0FD67E00CE0A0D /* Chac.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 370E33A32F0FD67E00CE0A0D /* Build configuration list for PBXProject "ChakChak" */;
+			buildConfigurationList = 370E33A32F0FD67E00CE0A0D /* Build configuration list for PBXProject "Chac" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -99,7 +99,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				370E33A72F0FD67E00CE0A0D /* ChakChak */,
+				370E33A72F0FD67E00CE0A0D /* Chac */,
 			);
 		};
 /* End PBXProject section */
@@ -251,9 +251,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZT27N85LQ5;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZT27N85LQ5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -267,8 +270,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nexters.chak;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nexters.chac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development com.nexters.chac";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -284,9 +289,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZT27N85LQ5;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZT27N85LQ5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -300,8 +308,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nexters.chak;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nexters.chac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development com.nexters.chac";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -315,7 +325,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		370E33A32F0FD67E00CE0A0D /* Build configuration list for PBXProject "ChakChak" */ = {
+		370E33A32F0FD67E00CE0A0D /* Build configuration list for PBXProject "Chac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				370E33B12F0FD68000CE0A0D /* Debug */,
@@ -324,7 +334,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		370E33B32F0FD68000CE0A0D /* Build configuration list for PBXNativeTarget "ChakChak" */ = {
+		370E33B32F0FD68000CE0A0D /* Build configuration list for PBXNativeTarget "Chac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				370E33B42F0FD68000CE0A0D /* Debug */,
