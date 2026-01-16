@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PhotoSelectView: View {
+    @State private var moveToNextView = false
     
     private let tempCount = 40
     private let columns = [
@@ -59,7 +60,7 @@ struct PhotoSelectView: View {
         .padding(.top, 12)
         .overlay(alignment: .bottom) {
             Button {
-                // TODO: 액션
+                moveToNextView = true
             } label: {
                 Text("사진을 선택해주세요")
                     .foregroundStyle(.black.opacity(0.7))
@@ -75,6 +76,9 @@ struct PhotoSelectView: View {
             .background(.white)
         }
         .navigationTitle("사진 선택")
+        .fullScreenCover(isPresented: $moveToNextView) {
+            PhotoSaveView()
+        }
     }
     
     @ViewBuilder
