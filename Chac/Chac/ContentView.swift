@@ -18,8 +18,8 @@ struct ContentView: View {
                     switch route {
                     case .main:
                         MainView()
-                    case .next:
-                        NextView()
+                    case .photoSelect:
+                        PhotoSelectView()
                     }
                 }
         }

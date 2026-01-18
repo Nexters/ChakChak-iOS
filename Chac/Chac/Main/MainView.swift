@@ -68,7 +68,7 @@ struct MainView: View {
                 VStack {
                     ForEach(0..<3) { _ in
                         ClusterCell(
-                            onOrganizeTap: { coordinator.push(.next) },
+                            onOrganizeTap: { coordinator.push(.photoSelect) },
                             onSaveTap: { } // TODO: 그대로 저장 액션 수행
                         )
                     }

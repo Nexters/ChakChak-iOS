@@ -16,7 +16,8 @@ struct PhotoSaveView: View {
     }
     
     
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var coordinator: NavigationCoordinator
     
     var body: some View {
         VStack {
@@ -24,6 +25,7 @@ struct PhotoSaveView: View {
                 Spacer()
                 Button {
                     dismiss()
+                    coordinator.popToRoot()
                 } label: {
                     Image(systemName: "xmark")
                         .resizable()
@@ -63,7 +65,8 @@ struct PhotoSaveView: View {
                 moveButton(
                     title: Strings.moveToPhotoList,
                     backgroundColor: .gray) {
-                    
+                        dismiss()
+                        coordinator.popToRoot()
                 }
                 
             }
