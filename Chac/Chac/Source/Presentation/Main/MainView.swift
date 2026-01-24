@@ -51,7 +51,7 @@ struct MainView: View {
             HStack {
                 Text(Strings.allPhotos)
                 Spacer()
-                Text("99,990") // TODO: 실제 데이터 갯수 주입
+                Text("\(photoLibraryStore.photos.count)")
             }
             .padding(.horizontal, Metric.horizontalPadding)
             .padding(.vertical, 16)
@@ -74,8 +74,9 @@ struct MainView: View {
             
             ScrollView {
                 VStack {
-                    ForEach(0..<3) { _ in
+                    ForEach(photoLibraryStore.clusters, id: \.id) { cluster in
                         ClusterCell(
+                            viewModel: cluster.toViewModel(),
                             onOrganizeTap: { coordinator.push(.photoSelect) },
                             onSaveTap: { } // TODO: 그대로 저장 액션 수행
                         )
