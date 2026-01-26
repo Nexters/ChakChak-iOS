@@ -6,19 +6,26 @@
 //
 
 import SwiftUI
+import Photos
 
 struct PhotoSelectView: View {
-    
+
     private enum Strings {
         static let selectAll = "전체 선택"
         static let selectPhoto = "사진 선택"
         static let selectPhotoDescription = "사진을 선택해주세요"
     }
     
+    private enum Metric {
+        static let horizontalPadding: CGFloat = 20
+        static let thumbnailSize: CGFloat = (UIScreen.main.bounds.width - (Metric.horizontalPadding * 2)) / 3
+    }
+    
+    @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
     @State private var moveToPhotoSaveView = false
     @State private var moveToPhotoDetailView = false
+    @State private var longPressedAsset: PHAsset?
     
-    private let tempCount = 40
     private let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -33,14 +40,14 @@ struct PhotoSelectView: View {
                         .font(.title2)
                         .lineLimit(2)
                     
-                    Text("0/\(tempCount) 선택")
+                    Text("0/\(photoLibraryStore.photos.count) 선택")
                         .foregroundStyle(.gray)
                 }
                 
                 Spacer()
                 
                 Button {
-                    
+                    // TODO: 전체선택 액션
                 } label: {
                     Text(Strings.selectAll)
                         .padding(.horizontal, 10)
@@ -53,22 +60,24 @@ struct PhotoSelectView: View {
                 .foregroundStyle(.gray)
 
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, Metric.horizontalPadding)
             
             ScrollView {
                 LazyVGrid(columns: columns) {
-                    ForEach(0..<tempCount) { index in
-                        photo()
-                            .onTapGesture {
-                                // TODO: 사진 선택
-                            }
-                            .onLongPressGesture(minimumDuration: 0.3) {
-                                print(#function, "\(index) long press")
-                                moveToPhotoDetailView = true
-                            }
+                    ForEach(photoLibraryStore.photos, id: \.localIdentifier) { phAsset in
+                        PhotoThumbnailView(
+                            phAsset: phAsset,
+                            targetSize: CGSize(width: Metric.thumbnailSize, height: Metric.thumbnailSize)
+                        )
+                        .onLongPressGesture(minimumDuration: 0.3) {
+                            let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+                            impactFeedback.impactOccurred()
+                            longPressedAsset = phAsset
+                            moveToPhotoDetailView = true
+                        }
                     }
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, Metric.horizontalPadding)
             }
             
             Button {
@@ -83,7 +92,7 @@ struct PhotoSelectView: View {
                             .fill(.gray.opacity(0.6))
                     )
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, Metric.horizontalPadding)
             .padding(.vertical, 10)
             .background(.white)
             
@@ -94,28 +103,12 @@ struct PhotoSelectView: View {
             PhotoSaveView()
         }
         .fullScreenCover(isPresented: $moveToPhotoDetailView) {
-            PhotoDetailView()
+            PhotoDetailView(phAsset: $longPressedAsset)
         }
-    }
-    
-    @ViewBuilder
-    private func photo() -> some View {
-        Image("")
-            .resizable()
-            .aspectRatio(1, contentMode: .fit)
-            .background(
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(.gray)
-            )
-            .overlay(alignment: .topTrailing) {
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(.white)
-                    .padding(5)
-            }
-        
     }
 }
 
 #Preview {
     PhotoSelectView()
+        .environmentObject(PhotoLibraryStore())
 }

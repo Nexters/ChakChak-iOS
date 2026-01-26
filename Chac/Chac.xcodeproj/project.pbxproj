@@ -10,9 +10,22 @@
 		370E33A82F0FD67E00CE0A0D /* Chac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AF73E6BA2F1E5FC500FE6F9B /* Exceptions for "Chac" folder in "Chac" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resource/Info.plist,
+			);
+			target = 370E33A72F0FD67E00CE0A0D /* Chac */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		370E33AA2F0FD67E00CE0A0D /* Chac */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AF73E6BA2F1E5FC500FE6F9B /* Exceptions for "Chac" folder in "Chac" target */,
+			);
 			path = Chac;
 			sourceTree = "<group>";
 		};
@@ -259,6 +272,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZT27N85LQ5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Chac/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -297,6 +311,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZT27N85LQ5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Chac/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -1,0 +1,42 @@
+//
+//  ContentView.swift
+//  ChakChak
+//
+//  Created by 이원빈 on 1/8/26.
+//
+
+import SwiftUI
+
+
+struct ContentView: View {
+    @StateObject private var coordinator = NavigationCoordinator()
+    @StateObject private var permissionManger = DefaultPhotoLibraryPermissionManager()
+    @StateObject private var photoLibraryStore = PhotoLibraryStore()
+    
+    var body: some View {
+        NavigationStack(path: $coordinator.path) {
+            MainView()
+                .navigationDestination(for: Route.self) { route in
+                    destinationView(for: route)
+                }
+        }
+        .environmentObject(coordinator)
+        .environmentObject(permissionManger)
+        .environmentObject(photoLibraryStore)
+    }
+    
+    @ViewBuilder
+    private func destinationView(for route: Route) -> some View {
+        switch route {
+        case .main:
+            MainView()
+        case .photoSelect:
+            PhotoSelectView()
+        }
+    }
+}
+
+#Preview {
+    ContentView()
+        .environmentObject(PhotoLibraryStore())
+}
