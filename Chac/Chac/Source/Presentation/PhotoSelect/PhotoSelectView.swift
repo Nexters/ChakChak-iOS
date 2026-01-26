@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Photos
-import UIKit
 
 struct PhotoSelectView: View {
 
