@@ -1,5 +1,5 @@
 //
-//  ClusterCellViewModel.swift
+//  ClusterCellModel.swift
 //  Chac
 //
 //  Created by 이원빈 on 1/24/26.
@@ -7,13 +7,13 @@
 
 import Photos
 
-struct ClusterCellViewModel {
+struct ClusterCellModel {
     let thumbnailPHAsset: PHAsset
     let title: String
     let photoCount: Int
 }
 
-extension ClusterCellViewModel {
+extension ClusterCellModel {
     static func stub(
         thumbnailImage: PHAsset = PHAsset(),
         title: String = "Jeju Trip",

@@ -23,7 +23,7 @@ struct ClusterCell: View {
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
     @State private var thumbnailImage: UIImage? = nil
     
-    let viewModel: ClusterCellViewModel
+    let viewModel: ClusterCellModel
     let onOrganizeTap: () -> Void
     let onSaveTap: () -> Void
     

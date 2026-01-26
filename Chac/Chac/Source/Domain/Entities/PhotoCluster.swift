@@ -15,8 +15,8 @@ struct PhotoCluster {
 }
 
 extension PhotoCluster {
-    func toViewModel() -> ClusterCellViewModel {
-        ClusterCellViewModel(
+    func toViewModel() -> ClusterCellModel {
+        ClusterCellModel(
             thumbnailPHAsset: phAssets.first ?? PHAsset(),
             title: title,
             photoCount: phAssets.count
