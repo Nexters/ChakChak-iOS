@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import Photos
 
 struct PhotoThumbnailView: View {
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
     @State private var image: UIImage?
     @State private var isPressed: Bool = false
     
-    let photoAsset: PhotoAsset
+    let phAsset: PHAsset
     let targetSize: CGSize
     
     var body: some View {
@@ -51,7 +52,7 @@ struct PhotoThumbnailView: View {
         guard image == nil else { return }
         
         do {
-            image = try await photoLibraryStore.requestThumbnail(for: photoAsset.phAsset, targetSize: targetSize)
+            image = try await photoLibraryStore.requestThumbnail(for: phAsset, targetSize: targetSize)
         } catch {
             print("Failed to load thumbnail: \(error.localizedDescription)")
         }

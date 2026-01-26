@@ -16,7 +16,7 @@ struct PhotoDetailView: View {
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
     @Environment(\.dismiss) var dismiss
     
-    @Binding var photoAsset: PhotoAsset?
+    @Binding var phAsset: PHAsset?
     @State private var image: UIImage?
     
     var body: some View {
@@ -58,11 +58,11 @@ struct PhotoDetailView: View {
     }
     
     private func loadThumbnailIfNeeded() async {
-        guard image == nil, let photoAsset else { return }
+        guard image == nil, let phAsset else { return }
         
         do {
             image = try await photoLibraryStore.requestThumbnail(
-                for: photoAsset.phAsset,
+                for: phAsset,
                 targetSize: CGSize(width: Metric.targetWidth, height: Metric.targetWidth)
             )
         } catch {
@@ -72,7 +72,7 @@ struct PhotoDetailView: View {
 }
 
 #Preview {
-    PhotoDetailView(photoAsset: .constant(nil))
+    PhotoDetailView(phAsset: .constant(nil))
 }
 
 extension PHAsset {

@@ -9,6 +9,6 @@ import UIKit
 import Photos
 
 protocol PhotoLibraryService {
-    func fetchAllImages() -> [PhotoAsset]
+    func fetchAllImages() -> [PHAsset]
     func requestImage(for asset: PHAsset, targetSize: CGSize, contentMode: PHImageContentMode) async throws -> UIImage
 }

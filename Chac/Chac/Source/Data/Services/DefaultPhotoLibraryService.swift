@@ -15,21 +15,14 @@ final class DefaultPhotoLibraryService: PhotoLibraryService {
         self.imageManager = imageManager
     }
     
-    func fetchAllImages() -> [PhotoAsset] {
+    func fetchAllImages() -> [PHAsset] {
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         let fetchResult = PHAsset.fetchAssets(with: .image, options: options)
-        var result: [PhotoAsset] = []
+        var result: [PHAsset] = []
         
         fetchResult.enumerateObjects { asset, _, _ in
-            result.append(
-                PhotoAsset(
-                    id: asset.localIdentifier,
-                    phAsset: asset,
-                    creationDate: asset.creationDate,
-                    location: asset.location
-                )
-            )
+            result.append(asset)
         }
         return result
     }
@@ -41,7 +34,7 @@ final class DefaultPhotoLibraryService: PhotoLibraryService {
     ) async throws -> UIImage {
         let options = PHImageRequestOptions()
         options.isNetworkAccessAllowed = true
-        options.deliveryMode = .highQualityFormat
+        options.deliveryMode = .highQualityFormat /// 변경 될 경우 isDegraded 체크 필요
         
         return try await withCheckedThrowingContinuation { continuation in
             imageManager.requestImage(

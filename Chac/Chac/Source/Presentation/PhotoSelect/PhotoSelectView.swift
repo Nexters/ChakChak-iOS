@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Photos
 import UIKit
 
 struct PhotoSelectView: View {
@@ -24,7 +25,7 @@ struct PhotoSelectView: View {
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
     @State private var moveToPhotoSaveView = false
     @State private var moveToPhotoDetailView = false
-    @State private var longPressedAsset: PhotoAsset?
+    @State private var longPressedAsset: PHAsset?
     
     private let columns = [
         GridItem(.flexible()),
@@ -64,15 +65,15 @@ struct PhotoSelectView: View {
             
             ScrollView {
                 LazyVGrid(columns: columns) {
-                    ForEach(photoLibraryStore.photos) { photoAsset in
+                    ForEach(photoLibraryStore.photos, id: \.localIdentifier) { phAsset in
                         PhotoThumbnailView(
-                            photoAsset: photoAsset,
+                            phAsset: phAsset,
                             targetSize: CGSize(width: Metric.thumbnailSize, height: Metric.thumbnailSize)
                         )
                         .onLongPressGesture(minimumDuration: 0.3) {
                             let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
                             impactFeedback.impactOccurred()
-                            longPressedAsset = photoAsset
+                            longPressedAsset = phAsset
                             moveToPhotoDetailView = true
                         }
                     }
@@ -103,7 +104,7 @@ struct PhotoSelectView: View {
             PhotoSaveView()
         }
         .fullScreenCover(isPresented: $moveToPhotoDetailView) {
-            PhotoDetailView(photoAsset: $longPressedAsset)
+            PhotoDetailView(phAsset: $longPressedAsset)
         }
     }
 }

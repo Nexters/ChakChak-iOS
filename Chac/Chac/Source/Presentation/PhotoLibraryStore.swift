@@ -4,7 +4,7 @@ import UIKit
 
 @MainActor
 final class PhotoLibraryStore: ObservableObject {
-    @Published private(set) var photos: [PhotoAsset] = []
+    @Published private(set) var photos: [PHAsset] = []
     @Published private(set) var clusters: [PhotoCluster] = []
     @Published var isLoading: Bool = false
     

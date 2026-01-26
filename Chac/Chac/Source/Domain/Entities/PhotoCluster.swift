@@ -11,15 +11,15 @@ import Photos
 struct PhotoCluster {
     let id: UUID
     let title: String
-    let photoAssets: [PhotoAsset]
+    let phAssets: [PHAsset]
 }
 
 extension PhotoCluster {
     func toViewModel() -> ClusterCellViewModel {
         ClusterCellViewModel(
-            thumbnailPHAsset: photoAssets.first?.phAsset ?? PHAsset(),
+            thumbnailPHAsset: phAssets.first ?? PHAsset(),
             title: title,
-            photoCount: photoAssets.count
+            photoCount: phAssets.count
         )
     }
 }
