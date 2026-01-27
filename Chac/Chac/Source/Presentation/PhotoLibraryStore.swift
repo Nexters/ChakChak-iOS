@@ -41,7 +41,7 @@ final class PhotoLibraryStore: ObservableObject {
     
     private func processClustering() async {
         guard !photos.isEmpty else { return }
-        let clusters = await clusterService.clusterPhotos(Array(photos[...500]))    // FIXME: 병렬처리 이후 photos로 변경
+        let clusters = await clusterService.clusterPhotos(photos)
         self.clusters = clusters
     }
 }

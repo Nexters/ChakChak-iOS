@@ -25,32 +25,34 @@ final class DefaultPhotoClusterService: PhotoClusterService {
         // 시간으로 그룹화
         let timeGroups = await timeService.cluster(assets: photos)
         
-        // 장소로 다시 그룹화
-        var allLocationGroups: [[PHAsset]] = []
-        for group in timeGroups {
-            let locationGroups = await locationService.cluster(assets: group)
-            allLocationGroups.append(contentsOf: locationGroups)
-        }
-        
-        // 병렬 처리
-        return await withTaskGroup(of: PhotoCluster?.self) { group in
-            for locGroup in allLocationGroups {
+        // 병렬 처리를 위한 TaskGroup
+        return await withTaskGroup(of: [PhotoCluster].self) { group in
+            for timeGroup in timeGroups {
+                // 각 시간 그룹마다 새로운 자식 Task 추가
                 group.addTask {
-                    // 클러스터의 첫 번째 사진의 위치로 측정
-                    guard let location = locGroup.first?.location else { return nil }
+                    // 공간 기반 2차 그룹화
+                    let locationGroups = await self.locationService.cluster(assets: timeGroup)
                     
-                    // TODO: 위치 이름 가져오는 로직 필요
-                    let title = "서울 도봉구"
+                    var clustersInTimeGroup: [PhotoCluster] = []
                     
-                    return PhotoCluster(id: UUID(), title: title, phAssets: locGroup)
+                    for locGroup in locationGroups {
+                        guard let location = locGroup.first?.location else { continue }
+                        
+                        // TODO: 위치 이름 가져오는 로직 필요
+                        let title = "서울 도봉구"
+                        
+                        clustersInTimeGroup.append(PhotoCluster(id: UUID(), title: title, phAssets: locGroup))
+                    }
+                    
+                    return clustersInTimeGroup
                 }
             }
             
             var results: [PhotoCluster] = []
-            for await cluster in group {
-                if let cluster = cluster {
-                    results.append(cluster)
-                }
+            
+            // 병렬 작업이 끝나는 순서대로 결과 수집
+            for await clusterGroup in group {
+                results.append(contentsOf: clusterGroup)
             }
             
             return results
