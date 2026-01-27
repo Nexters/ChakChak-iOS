@@ -8,5 +8,5 @@
 import Photos
 
 protocol PhotoClusterService {
-    func clusterPhotos(_ photos: [PHAsset]) -> [PhotoCluster]
+    func clusterPhotos(_ photos: [PHAsset]) async -> [PhotoCluster]
 }
