@@ -27,7 +27,7 @@ final class LocationClusteringService: ClusteringStrategy {
         self.minPoints = minPoints
     }
     
-    func cluster(assets: [PHAsset]) async -> [[PHAsset]] {
+    func cluster(assets: [PHAsset]) -> [[PHAsset]] {
         // 위치 정보가 있는 사진만 필터링
         let assetsWithLocation = assets.filter { $0.location != nil }
         guard !assetsWithLocation.isEmpty else { return [] }

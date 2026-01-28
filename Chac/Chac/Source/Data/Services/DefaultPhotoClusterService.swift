@@ -43,7 +43,7 @@ final class DefaultPhotoClusterService: PhotoClusterService {
                             activeTasks += 1
                             
                             // 공간 기반 2차 그룹화
-                            let locationGroups = await self.locationService.cluster(assets: timeGroup)
+                            let locationGroups = self.locationService.cluster(assets: timeGroup)
                             
                             for locGroup in locationGroups {
                                 guard let location = locGroup.first?.location else { continue }
