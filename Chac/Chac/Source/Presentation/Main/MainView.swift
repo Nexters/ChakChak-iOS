@@ -78,7 +78,7 @@ struct MainView: View {
                     ForEach(photoLibraryStore.clusters, id: \.id) { cluster in
                         ClusterCell(
                             viewModel: cluster.toViewModel(),
-                            onOrganizeTap: { coordinator.push(.photoSelect) },
+                            onOrganizeTap: { coordinator.push(.photoSelect(id: cluster.id)) },
                             onSaveTap: { } // TODO: 그대로 저장 액션 수행
                         )
                     }

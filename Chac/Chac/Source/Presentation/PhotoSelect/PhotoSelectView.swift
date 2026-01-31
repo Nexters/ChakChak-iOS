@@ -26,6 +26,8 @@ struct PhotoSelectView: View {
     @State private var moveToPhotoDetailView = false
     @State private var longPressedAsset: PHAsset?
     
+    let cluster: PhotoCluster
+    
     private let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -40,7 +42,7 @@ struct PhotoSelectView: View {
                         .font(.title2)
                         .lineLimit(2)
                     
-                    Text("0/\(photoLibraryStore.photos.count) 선택")
+                    Text("0/\(cluster.phAssets.count) 선택")
                         .foregroundStyle(.gray)
                 }
                 
@@ -64,7 +66,7 @@ struct PhotoSelectView: View {
             
             ScrollView {
                 LazyVGrid(columns: columns) {
-                    ForEach(photoLibraryStore.photos, id: \.localIdentifier) { phAsset in
+                    ForEach(cluster.phAssets, id: \.localIdentifier) { phAsset in
                         PhotoThumbnailView(
                             phAsset: phAsset,
                             targetSize: CGSize(width: Metric.thumbnailSize, height: Metric.thumbnailSize)
@@ -108,7 +110,7 @@ struct PhotoSelectView: View {
     }
 }
 
-#Preview {
-    PhotoSelectView()
-        .environmentObject(PhotoLibraryStore())
-}
+//#Preview {
+//    PhotoSelectView()
+//        .environmentObject(PhotoLibraryStore())
+//}
