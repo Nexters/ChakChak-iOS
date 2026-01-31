@@ -38,7 +38,7 @@ struct PhotoSelectView: View {
         VStack {
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("서울 광진구광진구 광진구광진구광진구광진구")
+                    Text(cluster.title)
                         .font(.title2)
                         .lineLimit(2)
                     

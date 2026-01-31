@@ -10,6 +10,7 @@ import Photos
 final class DefaultPhotoClusterService: PhotoClusterService {
     private let timeService: StreamingStrategy
     private let locationService: ClusteringStrategy
+    private let geocoder = CLGeocoder()
     
     init(
         timeService: StreamingStrategy = TimeClusteringService(),
@@ -48,8 +49,8 @@ final class DefaultPhotoClusterService: PhotoClusterService {
                             for locGroup in locationGroups {
                                 guard let location = locGroup.first?.location else { continue }
                                 
-                                // TODO: 위치 이름 가져오는 로직 필요
-                                let title = "서울 도봉구"
+                                // 위치 이름 가져오기
+                                let title = await self.fetchLocationName(from: location)
                                 
                                 let newCluster = PhotoCluster(id: UUID(), title: title, phAssets: locGroup)
                                 
@@ -63,6 +64,36 @@ final class DefaultPhotoClusterService: PhotoClusterService {
                 // 병렬 작업 끝나면 스트림 종료
                 continuation.finish()
             }
+        }
+    }
+    
+    /// location에 해당하는 주소를 추출합니다.
+    func fetchLocationName(from location: CLLocation) async -> String {
+        do {
+            let placemarks = try await geocoder.reverseGeocodeLocation(location)
+            
+            guard let placemark = placemarks.first else { return "어느 멋진 날의 추억" }
+            
+            let adminArea = placemark.administrativeArea
+            let locality = placemark.locality
+            let subLocality = placemark.subLocality
+            let thoroughfare = placemark.thoroughfare
+            
+            var addressComponents: [String] = []
+            let candidates = [adminArea, locality, subLocality, thoroughfare]
+            
+            for candidate in candidates {
+                guard let component = candidate, !component.isEmpty else { continue }
+                
+                if !addressComponents.contains(component) {
+                    addressComponents.append(component)
+                }
+            }
+            
+            return addressComponents.joined(separator: " ")
+        } catch {
+            print("역지오코딩 에러: \(error.localizedDescription)")
+            return "알 수 없는 장소"
         }
     }
     
