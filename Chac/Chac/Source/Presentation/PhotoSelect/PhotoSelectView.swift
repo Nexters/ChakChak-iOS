@@ -89,6 +89,9 @@ struct PhotoSelectView: View {
             }
             
             Button {
+                Task {
+                    await savePhotos()
+                }
             } label: {
                 Text(selectedAssets.isEmpty
                     ? Strings.selectPhotoDescription
@@ -130,6 +133,18 @@ struct PhotoSelectView: View {
             selectedAssets.removeAll()
         } else {
             selectedAssets = Set(cluster.phAssets)
+        }
+    }
+    
+    private func savePhotos() async {
+        do {
+            savedCount = try await photoLibraryStore.saveToAlbum(
+                assets: Array(selectedAssets),
+                albumName: cluster.title
+            )
+            moveToPhotoSaveView = true
+        } catch {
+            print("앨범 저장 실패: \(error.localizedDescription)")
         }
     }
 }
