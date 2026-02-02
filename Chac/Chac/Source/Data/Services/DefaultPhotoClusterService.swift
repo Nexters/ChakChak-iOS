@@ -12,6 +12,8 @@ final class DefaultPhotoClusterService: PhotoClusterService {
     private let locationService: ClusteringStrategy
     private let geocoder = CLGeocoder()
     
+    private var isFirstRequest = true
+    
     init(
         timeService: StreamingStrategy = TimeClusteringService(),
         locationService: ClusteringStrategy = LocationClusteringService()
@@ -30,7 +32,7 @@ final class DefaultPhotoClusterService: PhotoClusterService {
                 // 병렬 처리를 위한 TaskGroup
                 await withTaskGroup(of: Void.self) { group in
                     var activeTasks = 0
-                    let maxTasks = 3  // 동시에 실행할 최대 작업 수
+                    let maxTasks = 1  // 동시에 실행할 최대 작업 수
                     
                     for await timeGroup in timeGroups {
                         // 실행 중인 작업이 너무 많으면 하나가 끝날 때까지 대기
@@ -69,6 +71,13 @@ final class DefaultPhotoClusterService: PhotoClusterService {
     
     /// location에 해당하는 주소를 추출합니다.
     func fetchLocationName(from location: CLLocation) async -> String {
+        // 첫 번째는 바로 실행, 이후부터 1초 딜레이
+        if isFirstRequest {
+            isFirstRequest = false
+        } else {
+            try? await Task.sleep(for: .seconds(1))
+        }
+        
         do {
             let placemarks = try await geocoder.reverseGeocodeLocation(location)
             
