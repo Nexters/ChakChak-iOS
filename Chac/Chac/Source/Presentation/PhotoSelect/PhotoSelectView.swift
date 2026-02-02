@@ -25,6 +25,8 @@ struct PhotoSelectView: View {
     @State private var moveToPhotoSaveView = false
     @State private var moveToPhotoDetailView = false
     @State private var longPressedAsset: PHAsset?
+    @State private var selectedAssets: Set<PHAsset> = []
+    @State private var savedCount = 0
     
     let cluster: PhotoCluster
     
@@ -42,14 +44,14 @@ struct PhotoSelectView: View {
                         .font(.title2)
                         .lineLimit(2)
                     
-                    Text("0/\(cluster.phAssets.count) 선택")
+                    Text("\(selectedAssets.count)/\(cluster.phAssets.count) 선택")
                         .foregroundStyle(.gray)
                 }
                 
                 Spacer()
                 
                 Button {
-                    // TODO: 전체선택 액션
+                    selectAllAssets()
                 } label: {
                     Text(Strings.selectAll)
                         .padding(.horizontal, 10)
@@ -69,8 +71,12 @@ struct PhotoSelectView: View {
                     ForEach(cluster.phAssets, id: \.localIdentifier) { phAsset in
                         PhotoThumbnailView(
                             phAsset: phAsset,
-                            targetSize: CGSize(width: Metric.thumbnailSize, height: Metric.thumbnailSize)
+                            targetSize: CGSize(width: Metric.thumbnailSize, height: Metric.thumbnailSize),
+                            isSelected: selectedAssets.contains(phAsset)
                         )
+                        .onTapGesture {
+                            toggleSelection(for: phAsset)
+                        }
                         .onLongPressGesture(minimumDuration: 0.3) {
                             let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
                             impactFeedback.impactOccurred()
@@ -83,17 +89,19 @@ struct PhotoSelectView: View {
             }
             
             Button {
-                moveToPhotoSaveView = true
             } label: {
-                Text(Strings.selectPhotoDescription)
-                    .foregroundStyle(.black.opacity(0.7))
-                    .padding(.vertical, 12)
-                    .frame(maxWidth: .infinity)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.gray.opacity(0.6))
-                    )
+                Text(selectedAssets.isEmpty
+                    ? Strings.selectPhotoDescription
+                    : "\(selectedAssets.count)장의 사진 앨범에 저장")
+                .foregroundStyle(.black.opacity(0.7))
+                .padding(.vertical, 12)
+                .frame(maxWidth: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(selectedAssets.isEmpty ? .gray.opacity(0.3) : .gray.opacity(0.6))
+                )
             }
+            .disabled(selectedAssets.isEmpty)
             .padding(.horizontal, Metric.horizontalPadding)
             .padding(.vertical, 10)
             .background(.white)
@@ -102,10 +110,26 @@ struct PhotoSelectView: View {
         .padding(.top, 12)
         .navigationTitle(Strings.selectPhoto)
         .fullScreenCover(isPresented: $moveToPhotoSaveView) {
-            PhotoSaveView()
+            PhotoSaveView(savedCount: savedCount)
         }
         .fullScreenCover(isPresented: $moveToPhotoDetailView) {
             PhotoDetailView(phAsset: $longPressedAsset)
+        }
+    }
+    
+    private func toggleSelection(for asset: PHAsset) {
+        if selectedAssets.contains(asset) {
+            selectedAssets.remove(asset)
+        } else {
+            selectedAssets.insert(asset)
+        }
+    }
+    
+    private func selectAllAssets() {
+        if selectedAssets.count == cluster.phAssets.count {
+            selectedAssets.removeAll()
+        } else {
+            selectedAssets = Set(cluster.phAssets)
         }
     }
 }
