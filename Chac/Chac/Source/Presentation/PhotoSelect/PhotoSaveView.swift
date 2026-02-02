@@ -17,6 +17,7 @@ struct PhotoSaveView: View {
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var coordinator: NavigationCoordinator
+    @EnvironmentObject private var permissionManager: DefaultPhotoLibraryPermissionManager
     
     let savedCount: Int
     
@@ -60,7 +61,7 @@ struct PhotoSaveView: View {
                 moveButton(
                     title: Strings.moveToGallery,
                     backgroundColor: Color(uiColor: .lightGray)) {
-                    
+                        permissionManager.openPhotosApp()
                 }
                 
                 moveButton(
