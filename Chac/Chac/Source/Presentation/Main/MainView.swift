@@ -79,7 +79,7 @@ struct MainView: View {
                         ClusterCell(
                             viewModel: cluster.toViewModel(),
                             onOrganizeTap: { coordinator.push(.photoSelect(id: cluster.id)) },
-                            onSaveTap: { } // TODO: 그대로 저장 액션 수행
+                            onSaveTap: { savePhotos(cluster) }
                         )
                     }
                     
@@ -121,6 +121,15 @@ struct MainView: View {
         
         if permissionManager.hasPermission {
             photoLibraryStore.refreshIfAuthorized(status: status)
+        }
+    }
+    
+    private func savePhotos(_ cluster: PhotoCluster) {
+        Task {
+            try? await photoLibraryStore.saveToAlbum(
+                assets: cluster.phAssets,
+                albumName: cluster.title
+            )
         }
     }
 }
