@@ -70,7 +70,7 @@ final class DefaultPhotoClusterService: PhotoClusterService {
     }
     
     /// location에 해당하는 주소를 추출합니다.
-    func fetchLocationName(from location: CLLocation) async -> String {
+    func fetchLocationName(from location: CLLocation, retryCount: Int = 0) async -> String {
         // 첫 번째는 바로 실행, 이후부터 1초 딜레이
         if isFirstRequest {
             isFirstRequest = false
@@ -81,7 +81,7 @@ final class DefaultPhotoClusterService: PhotoClusterService {
         do {
             let placemarks = try await geocoder.reverseGeocodeLocation(location)
             
-            guard let placemark = placemarks.first else { return "어느 멋진 날의 추억" }
+            guard let placemark = placemarks.first else { return PhotoLocationError.foundNoResult.location }
             
             let adminArea = placemark.administrativeArea
             let locality = placemark.locality
@@ -100,9 +100,21 @@ final class DefaultPhotoClusterService: PhotoClusterService {
             }
             
             return addressComponents.joined(separator: " ")
+        } catch let error as CLError {
+            switch error.code {
+            case .network:
+                // 네트워크 에러는 retry
+                if retryCount < 2 {
+                    return await fetchLocationName(from: location, retryCount: retryCount + 1)
+                }
+                return PhotoLocationError.network.location
+            case .geocodeFoundNoResult:
+                return PhotoLocationError.foundNoResult.location
+            default:
+                return PhotoLocationError.network.location
+            }
         } catch {
-            print("역지오코딩 에러: \(error.localizedDescription)")
-            return "알 수 없는 장소"
+            return PhotoLocationError.network.location
         }
     }
     
