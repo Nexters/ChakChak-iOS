@@ -9,5 +9,4 @@ import Photos
 
 protocol PhotoClusterService {
     func clusterPhotos(_ photos: [PHAsset]) -> AsyncStream<PhotoCluster>
-    func fetchLocationName(from location: CLLocation, retryCount: Int) async -> String
 }
