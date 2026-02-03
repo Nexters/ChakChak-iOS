@@ -13,6 +13,7 @@ final class DefaultPhotoClusterService: PhotoClusterService {
     private let geocoder = CLGeocoder()
     
     private var isFirstRequest = true
+    private var locationCache: [String: String] = [:]
     
     init(
         timeService: StreamingStrategy = TimeClusteringService(),
@@ -71,6 +72,10 @@ final class DefaultPhotoClusterService: PhotoClusterService {
     
     /// location에 해당하는 주소를 추출합니다.
     func fetchLocationName(from location: CLLocation, retryCount: Int = 0) async -> String {
+        // 캐시 확인
+        let key = cacheKey(for: location)
+        if let cached = locationCache[key] { return cached }
+        
         // 첫 번째는 바로 실행, 이후부터 1초 딜레이
         if isFirstRequest {
             isFirstRequest = false
@@ -81,7 +86,9 @@ final class DefaultPhotoClusterService: PhotoClusterService {
         do {
             let placemarks = try await geocoder.reverseGeocodeLocation(location)
             
-            guard let placemark = placemarks.first else { return PhotoLocationError.foundNoResult.location }
+            guard let placemark = placemarks.first else {
+                return PhotoLocationError.foundNoResult.location
+            }
             
             let adminArea = placemark.administrativeArea
             let locality = placemark.locality
@@ -99,7 +106,10 @@ final class DefaultPhotoClusterService: PhotoClusterService {
                 }
             }
             
-            return addressComponents.joined(separator: " ")
+            let result = addressComponents.joined(separator: " ")
+            locationCache[key] = result
+            
+            return result
         } catch let error as CLError {
             switch error.code {
             case .network:
@@ -118,4 +128,10 @@ final class DefaultPhotoClusterService: PhotoClusterService {
         }
     }
     
+    /// 위치를 캐시 키로 변환
+    private func cacheKey(for location: CLLocation) -> String {
+        return String(format: "%.3f_%.3f",
+                      location.coordinate.latitude,
+                      location.coordinate.longitude)
+    }
 }
