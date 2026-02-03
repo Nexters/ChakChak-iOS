@@ -90,23 +90,12 @@ final class DefaultPhotoClusterService: PhotoClusterService {
                 return PhotoLocationError.foundNoResult.location
             }
             
-            let adminArea = placemark.administrativeArea
-            let locality = placemark.locality
-            let subLocality = placemark.subLocality
-            let thoroughfare = placemark.thoroughfare
+            let result = placemark.formattedAddress
             
-            var addressComponents: [String] = []
-            let candidates = [adminArea, locality, subLocality, thoroughfare]
-            
-            for candidate in candidates {
-                guard let component = candidate, !component.isEmpty else { continue }
-                
-                if !addressComponents.contains(component) {
-                    addressComponents.append(component)
-                }
+            if result.isEmpty {
+                return PhotoLocationError.foundNoResult.location
             }
             
-            let result = addressComponents.joined(separator: " ")
             locationCache[key] = result
             
             return result
