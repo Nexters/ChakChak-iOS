@@ -34,13 +34,13 @@ final class DefaultGeocodingService: GeocodingService {
             let placemarks = try await geocoder.reverseGeocodeLocation(location)
             
             guard let placemark = placemarks.first else {
-                return PhotoLocationError.foundNoResult.location
+                return LocationPlaceholder.noResult.rawValue
             }
             
             let result = placemark.formattedAddress
             
             if result.isEmpty {
-                return PhotoLocationError.foundNoResult.location
+                return LocationPlaceholder.noResult.rawValue
             }
             
             cache[key] = result
@@ -49,7 +49,7 @@ final class DefaultGeocodingService: GeocodingService {
             if let clError = error as? CLError {
                 return await handleCLError(clError, location: location, retryCount: retryCount)
             }
-            return PhotoLocationError.network.location
+            return LocationPlaceholder.network.rawValue
         }
     }
     
@@ -59,11 +59,11 @@ final class DefaultGeocodingService: GeocodingService {
             if retryCount < 2 {
                 return await fetchWithRetry(from: location, retryCount: retryCount + 1)
             }
-            return PhotoLocationError.network.location
+            return LocationPlaceholder.network.rawValue
         case .geocodeFoundNoResult:
-            return PhotoLocationError.foundNoResult.location
+            return LocationPlaceholder.noResult.rawValue
         default:
-            return PhotoLocationError.network.location
+            return LocationPlaceholder.network.rawValue
         }
     }
     
