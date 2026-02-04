@@ -75,10 +75,10 @@ struct MainView: View {
             
             ScrollView {
                 VStack {
-                    ForEach(photoLibraryStore.clusters, id: \.id) { cluster in
+                    ForEach(Array(photoLibraryStore.clusters.enumerated()), id: \.element.id) { index, cluster in
                         ClusterCell(
                             viewModel: cluster.toViewModel(),
-                            onOrganizeTap: { coordinator.push(.photoSelect(id: cluster.id)) },
+                            onOrganizeTap: { coordinator.push(.photoSelect(index: index)) },
                             onSaveTap: { savePhotos(cluster) }
                         )
                     }
