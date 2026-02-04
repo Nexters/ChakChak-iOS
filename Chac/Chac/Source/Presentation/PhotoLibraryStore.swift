@@ -40,8 +40,8 @@ final class PhotoLibraryStore: ObservableObject {
         return try await libraryService.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFill)
     }
     
-    func saveToAlbum(assets: [PHAsset], albumName: String) async throws -> Int {
-        return try await libraryService.saveToAlbum(assets: assets, albumName: albumName)
+    func saveToAlbum(assets: [PHAsset], albumName: String) async throws {
+        try await libraryService.saveToAlbum(assets: assets, albumName: albumName)
     }
     
     private func processClustering() async {

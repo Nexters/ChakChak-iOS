@@ -138,10 +138,11 @@ struct PhotoSelectView: View {
     
     private func savePhotos() async {
         do {
-            savedCount = try await photoLibraryStore.saveToAlbum(
+            try await photoLibraryStore.saveToAlbum(
                 assets: Array(selectedAssets),
                 albumName: cluster.title
             )
+            savedCount = selectedAssets.count
             moveToPhotoSaveView = true
         } catch {
             print("앨범 저장 실패: \(error.localizedDescription)")
