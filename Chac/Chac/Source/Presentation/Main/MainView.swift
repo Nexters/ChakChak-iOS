@@ -31,6 +31,7 @@ struct MainView: View {
     @EnvironmentObject private var permissionManager: DefaultPhotoLibraryPermissionManager
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
     @State private var isPresentNeedPermissionAlert: Bool = false
+    @State private var showSaveAlbumToast: Bool = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -79,7 +80,9 @@ struct MainView: View {
                         ClusterCell(
                             viewModel: cluster.toViewModel(),
                             onOrganizeTap: { coordinator.push(.photoSelect) },
-                            onSaveTap: { } // TODO: 그대로 저장 액션 수행
+                            onSaveTap: {
+                                showSaveAlbumToast = true
+                            }
                         )
                     }
                     
@@ -98,6 +101,7 @@ struct MainView: View {
         .onChange(of: permissionManager.permissionStatus) { _, newValue in
             handlePermissionStatus(newValue)
         }
+        .toast(isPresented: $showSaveAlbumToast, message: "앨범이 갤러리에 저장되었습니다.")
         .alert(Strings.permissionAlertTitle, isPresented: $isPresentNeedPermissionAlert) {
             Button(Strings.permissionAlertCancel, role: .cancel) {}
             Button(Strings.permissionAlertGoToSettings) {
