@@ -9,6 +9,7 @@ final class PhotoLibraryStore: ObservableObject {
     @Published private(set) var clusters: [PhotoCluster] = []
     @Published var isLoading: Bool = false
     
+    private var isFirstLoad = true
     private let libraryService: PhotoLibraryService
     private let clusterService: PhotoClusterService
     
@@ -22,10 +23,12 @@ final class PhotoLibraryStore: ObservableObject {
     
     func refreshIfAuthorized(status: PHAuthorizationStatus) {
         guard status == .authorized || status == .limited else { return }
-        guard isLoading == false else { return }
+        guard isLoading == false, isFirstLoad == true else { return }
         isLoading = true
+        isFirstLoad = false
         
         Task {
+            try await Task.sleep(nanoseconds: 3_000_000_000) // FIXME: 앨범 생성중... 화면 표출 시간 3초 강제 -> 논의 후 변경
             let fetched = await Task(priority: .userInitiated) {
                 libraryService.fetchAllImages()
             }.value
