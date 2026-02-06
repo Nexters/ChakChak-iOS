@@ -17,7 +17,7 @@ struct PhotoThumbnailView: View {
     let targetSize: CGSize
     
     var body: some View {
-        ZStack(alignment: .topTrailing) {
+        ZStack(alignment: .bottomTrailing) {
             Group {
                 if let image {
                     Image(uiImage: image)
@@ -33,12 +33,27 @@ struct PhotoThumbnailView: View {
             }
             .frame(width: targetSize.width, height: targetSize.height)
             .clipped()
-            .clipShape(RoundedRectangle(cornerRadius: 5))
-            .contentShape(Rectangle())
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .contentShape(RoundedRectangle(cornerRadius: 12))
+            .overlay {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isPressed ? Color.black.opacity(0.6) : .clear)
+                    .stroke(isPressed ? ColorPalette.stroke_01 : .clear, lineWidth: 1)
+            }
             
-            Image(systemName: isPressed ? "checkmark.circle.fill" : "checkmark.circle" )
-                .foregroundStyle(isPressed ? .blue : .white)
-                .padding(5)
+            Image("check_icon")
+                .renderingMode(.template)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 10, height: 10)
+                .foregroundStyle(isPressed ? ColorPalette.text_01 : ColorPalette.text_03)
+                .background(
+                    Circle()
+                        .fill(isPressed ? ColorPalette.primary : ColorPalette.black_40)
+                        .stroke(isPressed ? ColorPalette.stroke_03 : .clear, style: .init(lineWidth: 1))
+                        .frame(width: 20, height: 20)
+                )
+                .padding(10)
         }
         .onTapGesture {
             isPressed.toggle()

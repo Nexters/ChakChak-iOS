@@ -23,14 +23,26 @@ struct PhotoDetailView: View {
         
         VStack {
             HStack {
+                VStack(alignment: .leading) {
+                    Text("부산 광역시") // FIXME: 위치정보 주입
+                        .chacFont(.sub_title_03)
+                        .foregroundStyle(ColorPalette.text_02)
+                    Text("1월 23일 오후 12:15") // FIXME: 시간정보 주입
+                        .chacFont(.caption)
+                        .foregroundStyle(ColorPalette.text_04)
+                }
+                .padding(.leading, 20)
+                
                 Spacer()
+                
                 Button {
                     dismiss()
                 } label: {
                     Image(systemName: "xmark")
+                        .renderingMode(.template)
                         .resizable()
                         .frame(width: 18, height: 18)
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(ColorPalette.text_01)
                 }
                 .padding(.horizontal, 20)
                 .padding(.vertical, 14)
@@ -52,6 +64,7 @@ struct PhotoDetailView: View {
                 }
             }
         }
+        .background(ColorPalette.background)
         .task {
             await loadThumbnailIfNeeded()
         }
