@@ -11,10 +11,10 @@ import Photos
 struct PhotoThumbnailView: View {
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
     @State private var image: UIImage?
-    @State private var isPressed: Bool = false
     
     let phAsset: PHAsset
     let targetSize: CGSize
+    var isSelected: Bool = false
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -36,12 +36,9 @@ struct PhotoThumbnailView: View {
             .clipShape(RoundedRectangle(cornerRadius: 5))
             .contentShape(Rectangle())
             
-            Image(systemName: isPressed ? "checkmark.circle.fill" : "checkmark.circle" )
-                .foregroundStyle(isPressed ? .blue : .white)
+            Image(systemName: isSelected ? "checkmark.circle.fill" : "checkmark.circle" )
+                .foregroundStyle(isSelected ? .blue : .white)
                 .padding(5)
-        }
-        .onTapGesture {
-            isPressed.toggle()
         }
         .task {
             await loadThumbnailIfNeeded()

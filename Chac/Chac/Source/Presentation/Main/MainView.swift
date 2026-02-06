@@ -75,11 +75,11 @@ struct MainView: View {
             
             ScrollView {
                 VStack {
-                    ForEach(photoLibraryStore.clusters, id: \.id) { cluster in
+                    ForEach(Array(photoLibraryStore.clusters.enumerated()), id: \.element.id) { index, cluster in
                         ClusterCell(
                             viewModel: cluster.toViewModel(),
-                            onOrganizeTap: { coordinator.push(.photoSelect) },
-                            onSaveTap: { } // TODO: 그대로 저장 액션 수행
+                            onOrganizeTap: { coordinator.push(.photoSelect(index: index)) },
+                            onSaveTap: { savePhotos(cluster) }
                         )
                     }
                     
@@ -121,6 +121,15 @@ struct MainView: View {
         
         if permissionManager.hasPermission {
             photoLibraryStore.refreshIfAuthorized(status: status)
+        }
+    }
+    
+    private func savePhotos(_ cluster: PhotoCluster) {
+        Task {
+            try? await photoLibraryStore.saveToAlbum(
+                assets: cluster.phAssets,
+                albumName: cluster.title
+            )
         }
     }
 }

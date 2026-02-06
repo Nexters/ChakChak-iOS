@@ -8,7 +8,7 @@
 import Foundation
 import Photos
 
-struct PhotoCluster {
+struct PhotoCluster: Identifiable {
     let id: UUID
     let title: String
     let phAssets: [PHAsset]

@@ -15,9 +15,11 @@ struct PhotoSaveView: View {
         static let moveToPhotoList = "목록으로"
     }
     
-    
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var coordinator: NavigationCoordinator
+    @EnvironmentObject private var permissionManager: DefaultPhotoLibraryPermissionManager
+    
+    let savedCount: Int
     
     var body: some View {
         VStack {
@@ -46,7 +48,7 @@ struct PhotoSaveView: View {
                 .font(.system(size: 20, weight: .semibold))
                 .padding(.bottom, 8)
                 .foregroundStyle(.black)
-            Text("총 00장의 사진이 포함된 앨범을 \n갤러리에 저장했어요!")
+            Text("총 \(savedCount)장의 사진이 포함된 앨범을 \n갤러리에 저장했어요!")
                 .multilineTextAlignment(.center)
                 .font(.system(size: 16))
                 .foregroundStyle(.gray)
@@ -59,7 +61,7 @@ struct PhotoSaveView: View {
                 moveButton(
                     title: Strings.moveToGallery,
                     backgroundColor: Color(uiColor: .lightGray)) {
-                    
+                        permissionManager.openPhotosApp()
                 }
                 
                 moveButton(
@@ -88,5 +90,5 @@ struct PhotoSaveView: View {
 }
 
 #Preview {
-    PhotoSaveView()
+    PhotoSaveView(savedCount: 5)
 }

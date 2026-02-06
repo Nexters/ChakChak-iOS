@@ -30,8 +30,13 @@ struct ContentView: View {
         switch route {
         case .main:
             MainView()
-        case .photoSelect:
-            PhotoSelectView()
+        case .photoSelect(let index):
+            if index < photoLibraryStore.clusters.count {
+                PhotoSelectView(cluster: photoLibraryStore.clusters[index])
+            } else {
+                Text("클러스터를 찾을 수 없습니다.")
+            }
+            
         }
     }
 }
