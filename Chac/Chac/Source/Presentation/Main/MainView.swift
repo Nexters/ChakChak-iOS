@@ -120,8 +120,7 @@ struct MainView: View {
 							ClusterCell(
                             	viewModel: cluster.toViewModel(),
 								backgroundColor: generateColor(at: index),
-                            	onOrganizeTap: { coordinator.push(.photoSelect(index: index)) },
-                            	onSaveTap: { savePhotos(cluster) }
+                            	onOrganizeTap: { coordinator.push(.photoSelect(index: index)) }
                         	)
                         }
                     }

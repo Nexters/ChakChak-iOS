@@ -42,6 +42,10 @@ public extension DateFormatter {
         format: "M월 d일 a h:mm",
         locale: Locale(identifier: "ko_KR")
     )
+    
+    static let yyyyMMdd = DateFormatterUtil.formatter(
+        format: "yyyy년 MM월 dd일"
+    )
 }
 
 /*
