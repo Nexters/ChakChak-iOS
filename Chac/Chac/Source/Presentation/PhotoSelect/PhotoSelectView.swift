@@ -19,7 +19,7 @@ struct PhotoSelectView: View {
     
     private enum Metric {
         static let horizontalPadding: CGFloat = 20
-        static let thumbnailSize: CGFloat = (UIScreen.main.bounds.width - (Metric.horizontalPadding * 3)) / 3
+        static let thumbnailSize: CGFloat = (ScreenSize.width - (Metric.horizontalPadding * 3)) / 3
     }
     
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
@@ -49,7 +49,7 @@ struct PhotoSelectView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack(alignment: .top) {
+            HStack {
                 Text(cluster.title)
                     .chacFont(.sub_title_01)
                     .foregroundStyle(ColorPalette.text_01)

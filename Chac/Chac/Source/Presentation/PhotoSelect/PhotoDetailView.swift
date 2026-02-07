@@ -10,7 +10,7 @@ import Photos
 
 struct PhotoDetailView: View {
     private enum Metric {
-        static let targetWidth: CGFloat = UIScreen.main.bounds.width
+        static let targetWidth: CGFloat = ScreenSize.width
     }
     
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore

@@ -26,7 +26,7 @@ struct MainView: View {
         static let horizontalPadding: CGFloat = 20
         static let createAlbumIconSize: CGFloat = 16
         static let settingIconSize: CGFloat = 24
-        static let photoEmptyViewTopPadding: CGFloat = UIScreen.main.bounds.height / 9
+        static let photoEmptyViewTopPadding: CGFloat = ScreenSize.height / 9
     }
     
     @Environment(\.scenePhase) private var scenePhase
@@ -157,18 +157,6 @@ struct MainView: View {
             .cornerRadius(Metric.cornerRadius)
             .padding(.top, 20)
             .padding(.horizontal, Metric.horizontalPadding)
-        }
-    }
-    
-    @ViewBuilder
-    private func moveButton(title: String, titleColor: Color, backgroundColor: Color, action: @escaping () -> Void) -> some View { // TODO: 공통 컴포넌트로 분리
-        Button(action: action) {
-            Text(title)
-                .chacFont(.btn)
-                .foregroundStyle(titleColor)
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(RoundedRectangle(cornerRadius: 12).fill(backgroundColor))
         }
     }
     

@@ -15,7 +15,7 @@ struct PermissionEmptyView: View {
     }
     
     private enum Metric {
-        static let topMargin = UIScreen.main.bounds.height / 4
+        static let topMargin = ScreenSize.height / 4
     }
     
     @EnvironmentObject private var permissionManager: DefaultPhotoLibraryPermissionManager

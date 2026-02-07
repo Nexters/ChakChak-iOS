@@ -12,12 +12,12 @@ struct PhotoSaveView: View {
     private enum Strings {
         static let completeSave = "저장 완료"
         static let moveToGallery = "갤러리로"
-        static let moveToPhotoList = "목록으로"
+        static let moveToPhotoList = "메인으로"
         static let photoCountFormat = "총 %d장의 사진이 포함된 앨범을 \n갤러리에 저장했어요!"
     }
     
     private enum Metric {
-        static let topMargin = UIScreen.main.bounds.height / 9.75
+        static let topMargin = ScreenSize.height / 9.75
     }
     
     @Environment(\.dismiss) private var dismiss

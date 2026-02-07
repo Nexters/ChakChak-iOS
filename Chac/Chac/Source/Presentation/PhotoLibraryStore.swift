@@ -28,14 +28,12 @@ final class PhotoLibraryStore: ObservableObject {
         isFirstLoad = false
         
         Task {
-            try await Task.sleep(nanoseconds: 3_000_000_000) // FIXME: 앨범 생성중... 화면 표출 시간 3초 강제 -> 논의 후 변경
             let fetched = await Task(priority: .userInitiated) {
                 libraryService.fetchAllImages()
             }.value
             
             self.photos = fetched
             await processClustering()
-            
         }
     }
     
