@@ -145,7 +145,7 @@ struct PhotoSelectView: View {
             PhotoSaveView(savedCount: $savedCount)
         }
         .fullScreenCover(isPresented: $moveToPhotoDetailView) {
-            PhotoDetailView(phAsset: $longPressedAsset)
+            PhotoDetailView(phAsset: $longPressedAsset, title: cluster.title)
         }
     }
     

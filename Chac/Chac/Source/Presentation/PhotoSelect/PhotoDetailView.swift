@@ -16,18 +16,19 @@ struct PhotoDetailView: View {
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
     @Environment(\.dismiss) var dismiss
     
-    @Binding var phAsset: PHAsset?
     @State private var image: UIImage?
+    @Binding var phAsset: PHAsset?
+    let title: String
     
     var body: some View {
         
         VStack {
             HStack {
                 VStack(alignment: .leading) {
-                    Text("부산 광역시") // FIXME: 위치정보 주입
+                    Text(title)
                         .chacFont(.sub_title_03)
                         .foregroundStyle(ColorPalette.text_02)
-                    Text("1월 23일 오후 12:15") // FIXME: 시간정보 주입
+                    Text("\(DateFormatter.mmDDhhMM.string(from: phAsset?.creationDate ?? Date()))")
                         .chacFont(.caption)
                         .foregroundStyle(ColorPalette.text_04)
                 }
@@ -85,7 +86,7 @@ struct PhotoDetailView: View {
 }
 
 #Preview {
-    PhotoDetailView(phAsset: .constant(nil))
+    PhotoDetailView(phAsset: .constant(nil), title: "부산")
 }
 
 extension PHAsset {
