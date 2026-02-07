@@ -9,6 +9,7 @@ final class PhotoLibraryStore: ObservableObject {
     @Published private(set) var clusters: [PhotoCluster] = []
     @Published var isLoading: Bool = false
     
+    private var isFirstLoad = true
     private let libraryService: PhotoLibraryService
     private let clusterService: PhotoClusterService
     
@@ -22,8 +23,9 @@ final class PhotoLibraryStore: ObservableObject {
     
     func refreshIfAuthorized(status: PHAuthorizationStatus) {
         guard status == .authorized || status == .limited else { return }
-        guard isLoading == false else { return }
+        guard isLoading == false, isFirstLoad == true else { return }
         isLoading = true
+        isFirstLoad = false
         
         Task {
             let fetched = await Task(priority: .userInitiated) {
@@ -32,7 +34,6 @@ final class PhotoLibraryStore: ObservableObject {
             
             self.photos = fetched
             await processClustering()
-            self.isLoading = false
         }
     }
     
@@ -59,6 +60,7 @@ final class PhotoLibraryStore: ObservableObject {
                 
                 try? await Task.sleep(for: .seconds(0.2))
             }
+            self.isLoading = false
         }
     }
 }

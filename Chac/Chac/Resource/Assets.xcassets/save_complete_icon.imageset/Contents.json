@@ -1,6 +1,7 @@
 {
-  "colors" : [
+  "images" : [
     {
+      "filename" : "save_complete_icon.pdf",
       "idiom" : "universal"
     }
   ],

@@ -17,7 +17,7 @@ struct PhotoThumbnailView: View {
     var isSelected: Bool = false
     
     var body: some View {
-        ZStack(alignment: .topTrailing) {
+        ZStack(alignment: .bottomTrailing) {
             Group {
                 if let image {
                     Image(uiImage: image)
@@ -33,12 +33,27 @@ struct PhotoThumbnailView: View {
             }
             .frame(width: targetSize.width, height: targetSize.height)
             .clipped()
-            .clipShape(RoundedRectangle(cornerRadius: 5))
-            .contentShape(Rectangle())
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .contentShape(RoundedRectangle(cornerRadius: 12))
+            .overlay {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isSelected ? Color.black.opacity(0.6) : .clear)
+                    .stroke(isSelected ? ColorPalette.stroke_01 : .clear, lineWidth: 1)
+            }
             
-            Image(systemName: isSelected ? "checkmark.circle.fill" : "checkmark.circle" )
-                .foregroundStyle(isSelected ? .blue : .white)
-                .padding(5)
+            Image("check_icon")
+                .renderingMode(.template)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 10, height: 10)
+                .foregroundStyle(isSelected ? ColorPalette.text_01 : ColorPalette.text_03)
+                .background(
+                    Circle()
+                        .fill(isSelected ? ColorPalette.primary : ColorPalette.black_40)
+                        .stroke(isSelected ? ColorPalette.stroke_03 : .clear, style: .init(lineWidth: 1))
+                        .frame(width: 20, height: 20)
+                )
+                .padding(10)
         }
         .task {
             await loadThumbnailIfNeeded()
