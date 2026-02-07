@@ -179,11 +179,10 @@ struct MainView: View {
     private func generateColor(at index: Int) -> Color {
         let colorCycle = [
             ColorPalette.primary,
-            ColorPalette.sub_01,
-            ColorPalette.sub_02,
-            ColorPalette.sub_03
+            ColorPalette.point_01,
+            ColorPalette.point_02
         ]
-        return colorCycle[index % 4]
+        return colorCycle[index % colorCycle.count]
 	}
 
     private func savePhotos(_ cluster: PhotoCluster) {
