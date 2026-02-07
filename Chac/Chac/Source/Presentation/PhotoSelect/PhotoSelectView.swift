@@ -161,6 +161,7 @@ struct PhotoSelectView: View {
                 } label: {
                     Image("back_icon")
                 }
+                .buttonStyle(.plain)
             }
         }
         .customPopup(
