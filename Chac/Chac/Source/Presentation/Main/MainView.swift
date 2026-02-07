@@ -117,11 +117,14 @@ struct MainView: View {
                 ScrollView {
                     VStack {
                         ForEach(Array(photoLibraryStore.clusters.enumerated()), id: \.element.id) { index, cluster in
-							ClusterCell(
-                            	viewModel: cluster.toViewModel(),
-								backgroundColor: generateColor(at: index),
-                            	onOrganizeTap: { coordinator.push(.photoSelect(index: index)) }
-                        	)
+                            Button {
+                                coordinator.push(.photoSelect(index: index))
+                            } label: {
+                                ClusterCell(
+                                    viewModel: cluster.toViewModel(),
+                                    backgroundColor: generateColor(at: index)
+                                )
+                            }
                         }
                     }
                     .padding(.horizontal, Metric.horizontalPadding)

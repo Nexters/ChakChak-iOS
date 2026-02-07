@@ -19,7 +19,6 @@ struct ClusterCell: View {
     
     let viewModel: ClusterCellModel
     let backgroundColor: Color
-    let onOrganizeTap: () -> Void
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 16) {
@@ -45,16 +44,15 @@ struct ClusterCell: View {
                     .foregroundStyle(ColorPalette.text_01)
                 Text("\(DateFormatter.yyyyMMdd.string(from: viewModel.thumbnailPHAsset.creationDate ?? Date()))")
                     .chacFont(.date_text)
+                    .foregroundStyle(ColorPalette.white_80)
                 Spacer()
             }
             .padding(.vertical, 2)
             
             Spacer()
             
-            Button(action: onOrganizeTap) {
-                Image("arrow_up_right_icon")
-            }
-            .padding(.trailing, 2)
+            Image("arrow_up_right_icon")
+                .padding(.trailing, 2)
         }
         .padding(14)
         .background(backgroundColor)
@@ -73,5 +71,5 @@ struct ClusterCell: View {
 }
 
 #Preview {
-    ClusterCell(viewModel: .stub(), backgroundColor: ColorPalette.primary, onOrganizeTap: {})
+    ClusterCell(viewModel: .stub(), backgroundColor: ColorPalette.primary)
 }
