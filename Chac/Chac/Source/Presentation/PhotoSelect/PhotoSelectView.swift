@@ -15,6 +15,8 @@ struct PhotoSelectView: View {
         static let cancelSelectAll = "전체 해제"
         static let selectPhoto = "사진 정리"
         static let selectPhotoDescription = "사진을 선택해주세요"
+        static let backPopupTitle = "페이지 나가기"
+        static let backPopupDescription = "선택된 내용은 저장되지 않습니다.\n페이지를 나가시겠어요?"
     }
     
     private enum Metric {
@@ -23,12 +25,14 @@ struct PhotoSelectView: View {
     }
     
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
+    @Environment(\.dismiss) var dismiss
     @State private var moveToPhotoSaveView = false
     @State private var moveToPhotoDetailView = false
     @State private var longPressedAsset: PHAsset?
     @State private var isSelectAll: Bool = false
     @State private var selectedAssets: Set<PHAsset> = []
     @State private var savedCount = 0
+    @State private var showPopup = false
     
     let cluster: PhotoCluster
     
@@ -141,6 +145,7 @@ struct PhotoSelectView: View {
         .padding(.top, 12)
         .background(ColorPalette.background)
         .navigationTitle(Strings.selectPhoto)
+        .navigationBarBackButtonHidden()
         .preferredColorScheme(.dark)
         .fullScreenCover(isPresented: $moveToPhotoSaveView) {
             PhotoSaveView(savedCount: $savedCount)
@@ -148,6 +153,23 @@ struct PhotoSelectView: View {
         .fullScreenCover(isPresented: $moveToPhotoDetailView) {
             PhotoDetailView(phAsset: $longPressedAsset, title: cluster.title)
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    if !selectedAssets.isEmpty { showPopup = true }
+                    else { dismiss() }
+                } label: {
+                    Image("back_icon")
+                }
+            }
+        }
+        .customPopup(
+            isPresented: $showPopup,
+            title: Strings.backPopupTitle,
+            explaination: Strings.backPopupDescription,
+            cancelAction: { showPopup = false },
+            okAction: { dismiss() }
+        )
     }
     
     private func toggleSelection(for asset: PHAsset) {

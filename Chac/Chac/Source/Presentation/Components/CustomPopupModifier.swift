@@ -11,6 +11,7 @@ struct CustomPopupModifier: ViewModifier {
     @Binding var isPresented: Bool
     let title: String
     let explaination: String
+    let cancelAction: () -> Void
     let okAction: () -> Void
 
     func body(content: Content) -> some View {
@@ -31,6 +32,7 @@ struct CustomPopupModifier: ViewModifier {
                     
                     HStack(spacing: 8) {
                         Button {
+                            cancelAction()
                             isPresented = false
                         } label: {
                             Text("취소")
@@ -68,15 +70,14 @@ extension View {
         isPresented: Binding<Bool>,
         title: String,
         explaination: String,
-        action: @escaping () -> Void
+        cancelAction: @escaping () -> Void,
+        okAction: @escaping () -> Void
     ) -> some View {
-        self.modifier(CustomPopupModifier(isPresented: isPresented, title: title, explaination: explaination, okAction: action))
+        self.modifier(CustomPopupModifier(isPresented: isPresented, title: title, explaination: explaination, cancelAction: cancelAction, okAction: okAction))
     }
 }
 
 #Preview {
     EmptyView()
-        .customPopup(isPresented: .constant(true), title: "페이지 나가기", explaination: "선택된 내용은 저장되지 않습니다.\n페이지를 나가겠어요?") {
-            
-        }
+        .customPopup(isPresented: .constant(true), title: "페이지 나가기", explaination: "선택된 내용은 저장되지 않습니다.\n페이지를 나가겠어요?") { } okAction: { }
 }
