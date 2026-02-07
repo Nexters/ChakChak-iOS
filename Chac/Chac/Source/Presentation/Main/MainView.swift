@@ -34,7 +34,6 @@ struct MainView: View {
     @EnvironmentObject private var permissionManager: DefaultPhotoLibraryPermissionManager
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
     @State private var isNeedPermission: Bool = false
-    
     var body: some View {
         VStack(spacing: 0) {
             HStack {
