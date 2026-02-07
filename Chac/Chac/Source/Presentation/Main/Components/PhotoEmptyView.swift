@@ -14,8 +14,20 @@ struct PhotoEmptyView: View {
     }
     
     var body: some View {
-        Text(Strings.noPhotosMessage)
-            .multilineTextAlignment(.center)
+        VStack(spacing: 0) {
+            Image("photo_empty_icon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 91)
+                
+            Text(Strings.noPhotosMessage)
+                .multilineTextAlignment(.center)
+                .chacFont(.body)
+                .foregroundStyle(ColorPalette.text_03)
+                .padding(.top, 31)
+            
+            Spacer()
+        }
     }
 }
 

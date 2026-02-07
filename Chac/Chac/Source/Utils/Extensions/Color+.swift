@@ -18,7 +18,3 @@ extension Color {
         )
     }
 }
-
-enum ColorPalette {
-    static let gray = Color(hex: 0xF2F2F2)
-}

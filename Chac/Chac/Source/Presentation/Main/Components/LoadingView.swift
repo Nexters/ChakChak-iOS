@@ -15,15 +15,19 @@ struct LoadingView: View {
     
     var body: some View {
         VStack {
-            Image("loading_icon")
+            Image("processing_icon")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 43.25, height: 38)
-                .padding(.top, 40)
+                .frame(width: 105)
+                .padding(.top, 70)
             
             Text(Strings.loadingDescription)
                 .multilineTextAlignment(.center)
                 .padding(.top, 14)
+                .chacFont(.body)
+                .foregroundStyle(ColorPalette.text_03)
+            
+            Spacer()
         }
     }
 }

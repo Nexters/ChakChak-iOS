@@ -59,4 +59,14 @@ final class DefaultPhotoLibraryService: PhotoLibraryService {
             }
         }
     }
+    
+    func saveToAlbum(assets: [PHAsset], albumName: String) async throws {
+        guard !assets.isEmpty else { return }
+        
+        // 새 앨범 생성 및 사진 추가
+        try await PHPhotoLibrary.shared().performChanges {
+            let createRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumName)
+            createRequest.addAssets(assets as NSArray)
+        }
+    }
 }
