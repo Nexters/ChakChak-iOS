@@ -78,7 +78,6 @@ struct PhotoSelectView: View {
             .padding(.horizontal, Metric.horizontalPadding)
             
             HStack(spacing: 5) {
-                Spacer()
                 Text("\(selectedAssets.count)")
                     .chacFont(.number)
                     .foregroundStyle(ColorPalette.text_02)
@@ -91,9 +90,11 @@ struct PhotoSelectView: View {
                 Text("\(cluster.phAssets.count)")
                     .chacFont(.number)
                     .foregroundStyle(ColorPalette.text_02)
+                
+                Spacer()
             }
             .padding(.horizontal, Metric.horizontalPadding)
-            .padding(.top, 16)
+            .padding(.top, 4)
             
             ScrollView {
                 LazyVGrid(columns: columns) {
@@ -116,7 +117,7 @@ struct PhotoSelectView: View {
                 }
                 .padding(.horizontal, Metric.horizontalPadding)
             }
-            .padding(.top, 8)
+            .padding(.top, 20)
             
             Button {
                 Task {
