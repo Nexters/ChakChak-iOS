@@ -116,13 +116,13 @@ struct MainView: View {
             } else {
                 ScrollView {
                     VStack {
-                        ForEach(photoLibraryStore.clusters.indices, id: \.self) { index in
-                            ClusterCell(
-                                viewModel: photoLibraryStore.clusters[index].toViewModel(),
-                                backgroundColor: generateColor(at: index),
-                                onOrganizeTap: { coordinator.push(.photoSelect) },
-                                onSaveTap: { } // TODO: 그대로 저장 액션 수행
-                            )
+                        ForEach(Array(photoLibraryStore.clusters.enumerated()), id: \.element.id) { index, cluster in
+							ClusterCell(
+                            	viewModel: cluster.toViewModel(),
+								backgroundColor: generateColor(at: index),
+                            	onOrganizeTap: { coordinator.push(.photoSelect(index: index)) },
+                            	onSaveTap: { savePhotos(cluster) }
+                        	)
                         }
                     }
                     .padding(.horizontal, Metric.horizontalPadding)
@@ -196,6 +196,15 @@ struct MainView: View {
             ColorPalette.sub_03
         ]
         return colorCycle[index % 4]
+	}
+
+    private func savePhotos(_ cluster: PhotoCluster) {
+        Task {
+            try? await photoLibraryStore.saveToAlbum(
+                assets: cluster.phAssets,
+                albumName: cluster.title
+            )
+        }
     }
 }
 

@@ -27,6 +27,10 @@ struct PhotoSelectView: View {
     @State private var moveToPhotoDetailView = false
     @State private var longPressedAsset: PHAsset?
     @State private var isSelectAll: Bool = false
+    @State private var selectedAssets: Set<PHAsset> = []
+    @State private var savedCount = 0
+    
+    let cluster: PhotoCluster
     
     private let columns = [
         GridItem(.flexible()),
@@ -45,14 +49,20 @@ struct PhotoSelectView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(alignment: .top) {
-                Text("서울 광진구광진구 광진구광진구광진구광진구") // FIXME: 앨범 제목 주입
-                    .chacFont(.sub_title_01)
-                    .foregroundStyle(ColorPalette.text_01)
-                    .lineLimit(2)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(cluster.title)
+                        .chacFont(.sub_title_01)
+                    	.foregroundStyle(ColorPalette.text_01)
+                        .lineLimit(2)
+                    
+                    Text("\(selectedAssets.count)/\(cluster.phAssets.count) 선택")
+                        .foregroundStyle(.gray)
+                }
+                
                 Spacer()
                 Button {
-                    isSelectAll.toggle()
-                    // TODO: 전체선택 액션
+                    selectAllAssets()
+					// isSelectAll.toggle()
                 } label: {
                     Text(isSelectAll ? Strings.cancelSelectAll : Strings.selectAll)
                         .chacFont(.caption)
@@ -91,11 +101,15 @@ struct PhotoSelectView: View {
             
             ScrollView {
                 LazyVGrid(columns: columns) {
-                    ForEach(photoLibraryStore.photos, id: \.localIdentifier) { phAsset in
+                    ForEach(cluster.phAssets, id: \.localIdentifier) { phAsset in
                         PhotoThumbnailView(
                             phAsset: phAsset,
-                            targetSize: CGSize(width: Metric.thumbnailSize, height: Metric.thumbnailSize)
+                            targetSize: CGSize(width: Metric.thumbnailSize, height: Metric.thumbnailSize),
+                            isSelected: selectedAssets.contains(phAsset)
                         )
+                        .onTapGesture {
+                            toggleSelection(for: phAsset)
+                        }
                         .onLongPressGesture(minimumDuration: 0.3) {
                             let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
                             impactFeedback.impactOccurred()
@@ -109,18 +123,21 @@ struct PhotoSelectView: View {
             .padding(.top, 8)
             
             Button {
-                moveToPhotoSaveView = true
+                Task {
+                    await savePhotos()
+                }
             } label: {
-                Text(Strings.selectPhotoDescription) // TODO: 활성화 text: "\(n)장의 사진 앨범에 저장"
+                Text(selectedAssets.isEmpty ? Strings.selectPhotoDescription : "\(selectedAssets.count)장의 사진 앨범에 저장")
                     .chacFont(.btn)
-                    .foregroundStyle(ColorPalette.text_btn_03)// TODO: 활성화 색상 text_btn_03
+                    .foregroundStyle(selectedAssets.isEmpty ? ColorPalette.text_btn_03 : ColorPalette.text_btn_03)// TODO: 활성화 색상 text_btn_03
                     .padding(.vertical, 17.5)
                     .frame(maxWidth: .infinity)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(ColorPalette.disable) // TODO: 활성화 색상 primary
+                            .fill(selectedAssets.isEmpty ? ColorPalette.disable : ColorPalette.primary) // TODO: 활성화 색상 primary
                     )
             }
+            .disabled(selectedAssets.isEmpty)
             .padding(.horizontal, Metric.horizontalPadding)
             .padding(.top, Metric.horizontalPadding)
         }
@@ -129,15 +146,44 @@ struct PhotoSelectView: View {
         .navigationTitle(Strings.selectPhoto)
         .preferredColorScheme(.dark)
         .fullScreenCover(isPresented: $moveToPhotoSaveView) {
-            PhotoSaveView()
+            PhotoSaveView(savedCount: savedCount)
         }
         .fullScreenCover(isPresented: $moveToPhotoDetailView) {
             PhotoDetailView(phAsset: $longPressedAsset)
         }
     }
+    
+    private func toggleSelection(for asset: PHAsset) {
+        if selectedAssets.contains(asset) {
+            selectedAssets.remove(asset)
+        } else {
+            selectedAssets.insert(asset)
+        }
+    }
+    
+    private func selectAllAssets() {
+        if selectedAssets.count == cluster.phAssets.count {
+            selectedAssets.removeAll()
+        } else {
+            selectedAssets = Set(cluster.phAssets)
+        }
+    }
+    
+    private func savePhotos() async {
+        do {
+            try await photoLibraryStore.saveToAlbum(
+                assets: Array(selectedAssets),
+                albumName: cluster.title
+            )
+            savedCount = selectedAssets.count
+            moveToPhotoSaveView = true
+        } catch {
+            print("앨범 저장 실패: \(error.localizedDescription)")
+        }
+    }
 }
 
-#Preview {
-    PhotoSelectView()
-        .environmentObject(PhotoLibraryStore())
-}
+//#Preview {
+//    PhotoSelectView()
+//        .environmentObject(PhotoLibraryStore())
+//}

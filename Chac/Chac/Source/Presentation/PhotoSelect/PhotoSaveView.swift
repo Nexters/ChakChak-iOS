@@ -20,9 +20,11 @@ struct PhotoSaveView: View {
         static let topMargin = UIScreen.main.bounds.height / 9.75
     }
     
-    
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var coordinator: NavigationCoordinator
+    @EnvironmentObject private var permissionManager: DefaultPhotoLibraryPermissionManager
+    
+    let savedCount: Int
     
     var body: some View {
         VStack(spacing: 0) {
@@ -51,7 +53,7 @@ struct PhotoSaveView: View {
                 .foregroundStyle(ColorPalette.text_01)
                 .padding(.top, 26)
             
-            Text(String(format: Strings.photoCountFormat, 4)) // FIXME: 사진 갯수 주입
+            Text(String(format: Strings.photoCountFormat, saveCount))
                 .multilineTextAlignment(.center)
                 .chacFont(.body)
                 .foregroundStyle(ColorPalette.text_03)
@@ -67,7 +69,7 @@ struct PhotoSaveView: View {
                     titleColor: ColorPalette.text_btn_02,
                     backgroundColor: ColorPalette.sub_04
                 ) {
-                    
+                    permissionManager.openPhotosApp()
                 }
                 
                 moveButton(
@@ -99,5 +101,5 @@ struct PhotoSaveView: View {
 }
 
 #Preview {
-    PhotoSaveView()
+    PhotoSaveView(savedCount: 5)
 }

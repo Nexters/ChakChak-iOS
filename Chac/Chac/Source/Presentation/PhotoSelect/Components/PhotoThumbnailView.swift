@@ -11,10 +11,10 @@ import Photos
 struct PhotoThumbnailView: View {
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
     @State private var image: UIImage?
-    @State private var isPressed: Bool = false
     
     let phAsset: PHAsset
     let targetSize: CGSize
+    var isSelected: Bool = false
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -46,7 +46,7 @@ struct PhotoThumbnailView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 10, height: 10)
-                .foregroundStyle(isPressed ? ColorPalette.text_01 : ColorPalette.text_03)
+                .foregroundStyle(isSelected ? ColorPalette.text_01 : ColorPalette.text_03)
                 .background(
                     Circle()
                         .fill(isPressed ? ColorPalette.primary : ColorPalette.black_40)
@@ -54,9 +54,6 @@ struct PhotoThumbnailView: View {
                         .frame(width: 20, height: 20)
                 )
                 .padding(10)
-        }
-        .onTapGesture {
-            isPressed.toggle()
         }
         .task {
             await loadThumbnailIfNeeded()
