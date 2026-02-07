@@ -22,11 +22,15 @@ struct CustomPopupModifier: ViewModifier {
                 Color.black.opacity(0.4)
                     .ignoresSafeArea()
 
-                VStack {
+                VStack(spacing: 0) {
                     Image("exclamation_icon")
                     Text(title)
+                        .chacFont(.headline_02)
+                        .foregroundStyle(ColorPalette.text_01)
                         .padding(.top, 16)
                     Text(explaination)
+                        .chacFont(.body)
+                        .foregroundStyle(ColorPalette.text_03)
                         .multilineTextAlignment(.center)
                         .padding(.vertical, 10)
                     
@@ -36,9 +40,10 @@ struct CustomPopupModifier: ViewModifier {
                             isPresented = false
                         } label: {
                             Text("취소")
+                                .foregroundStyle(ColorPalette.text_btn_02)
                                 .frame(height: 54)
                                 .frame(maxWidth: .infinity)
-                                .background()
+                                .background(ColorPalette.sub_04)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                         Button {
@@ -46,17 +51,18 @@ struct CustomPopupModifier: ViewModifier {
                             isPresented = false
                         } label: {
                             Text("확인")
+                                .foregroundStyle(ColorPalette.text_btn_01)
                                 .frame(height: 54)
                                 .frame(maxWidth: .infinity)
-                                .background()
+                                .background(ColorPalette.primary)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
-                        
                     }
+                    .chacFont(.btn)
                     .padding(.top, 20)
                 }
                 .padding(20)
-                .background(.gray)
+                .background(ColorPalette.background_popup)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .padding(24)
             }
