@@ -38,7 +38,8 @@ struct PhotoSelectView: View {
         GridItem(.flexible())
     ]
     
-    init() {
+    init(cluster: PhotoCluster) {
+        self.cluster = cluster
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = UIColor(cgColor: ColorPalette.background.cgColor!)
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
@@ -49,20 +50,15 @@ struct PhotoSelectView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(cluster.title)
-                        .chacFont(.sub_title_01)
-                    	.foregroundStyle(ColorPalette.text_01)
-                        .lineLimit(2)
-                    
-                    Text("\(selectedAssets.count)/\(cluster.phAssets.count) 선택")
-                        .foregroundStyle(.gray)
-                }
+                Text(cluster.title)
+                    .chacFont(.sub_title_01)
+                    .foregroundStyle(ColorPalette.text_01)
+                    .lineLimit(2)
                 
                 Spacer()
+                
                 Button {
                     selectAllAssets()
-					// isSelectAll.toggle()
                 } label: {
                     Text(isSelectAll ? Strings.cancelSelectAll : Strings.selectAll)
                         .chacFont(.caption)
@@ -83,7 +79,7 @@ struct PhotoSelectView: View {
             
             HStack(spacing: 5) {
                 Spacer()
-                Text("0") // 선택된 수
+                Text("\(selectedAssets.count)")
                     .chacFont(.number)
                     .foregroundStyle(ColorPalette.text_02)
                 
@@ -92,7 +88,7 @@ struct PhotoSelectView: View {
                         .frame(width: 1.5, height: 10)
                         .rotationEffect(.degrees(30))
                 
-                Text("\(photoLibraryStore.photos.count)")
+                Text("\(cluster.phAssets.count)")
                     .chacFont(.number)
                     .foregroundStyle(ColorPalette.text_02)
             }
@@ -129,12 +125,12 @@ struct PhotoSelectView: View {
             } label: {
                 Text(selectedAssets.isEmpty ? Strings.selectPhotoDescription : "\(selectedAssets.count)장의 사진 앨범에 저장")
                     .chacFont(.btn)
-                    .foregroundStyle(selectedAssets.isEmpty ? ColorPalette.text_btn_03 : ColorPalette.text_btn_03)// TODO: 활성화 색상 text_btn_03
+                    .foregroundStyle(selectedAssets.isEmpty ? ColorPalette.text_btn_03 : ColorPalette.text_btn_01)
                     .padding(.vertical, 17.5)
                     .frame(maxWidth: .infinity)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(selectedAssets.isEmpty ? ColorPalette.disable : ColorPalette.primary) // TODO: 활성화 색상 primary
+                            .fill(selectedAssets.isEmpty ? ColorPalette.disable : ColorPalette.primary)
                     )
             }
             .disabled(selectedAssets.isEmpty)
@@ -146,7 +142,7 @@ struct PhotoSelectView: View {
         .navigationTitle(Strings.selectPhoto)
         .preferredColorScheme(.dark)
         .fullScreenCover(isPresented: $moveToPhotoSaveView) {
-            PhotoSaveView(savedCount: savedCount)
+            PhotoSaveView(savedCount: $savedCount)
         }
         .fullScreenCover(isPresented: $moveToPhotoDetailView) {
             PhotoDetailView(phAsset: $longPressedAsset)
@@ -164,8 +160,10 @@ struct PhotoSelectView: View {
     private func selectAllAssets() {
         if selectedAssets.count == cluster.phAssets.count {
             selectedAssets.removeAll()
+            isSelectAll = false
         } else {
             selectedAssets = Set(cluster.phAssets)
+            isSelectAll = true
         }
     }
     

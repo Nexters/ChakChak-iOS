@@ -24,7 +24,7 @@ struct PhotoSaveView: View {
     @EnvironmentObject private var coordinator: NavigationCoordinator
     @EnvironmentObject private var permissionManager: DefaultPhotoLibraryPermissionManager
     
-    let savedCount: Int
+    @Binding var savedCount: Int
     
     var body: some View {
         VStack(spacing: 0) {
@@ -53,7 +53,7 @@ struct PhotoSaveView: View {
                 .foregroundStyle(ColorPalette.text_01)
                 .padding(.top, 26)
             
-            Text(String(format: Strings.photoCountFormat, saveCount))
+            Text(String(format: Strings.photoCountFormat, savedCount))
                 .multilineTextAlignment(.center)
                 .chacFont(.body)
                 .foregroundStyle(ColorPalette.text_03)
@@ -101,5 +101,5 @@ struct PhotoSaveView: View {
 }
 
 #Preview {
-    PhotoSaveView(savedCount: 5)
+    PhotoSaveView(savedCount: .constant(5))
 }

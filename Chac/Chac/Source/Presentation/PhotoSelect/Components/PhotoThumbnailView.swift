@@ -37,8 +37,8 @@ struct PhotoThumbnailView: View {
             .contentShape(RoundedRectangle(cornerRadius: 12))
             .overlay {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(isPressed ? Color.black.opacity(0.6) : .clear)
-                    .stroke(isPressed ? ColorPalette.stroke_01 : .clear, lineWidth: 1)
+                    .fill(isSelected ? Color.black.opacity(0.6) : .clear)
+                    .stroke(isSelected ? ColorPalette.stroke_01 : .clear, lineWidth: 1)
             }
             
             Image("check_icon")
@@ -49,8 +49,8 @@ struct PhotoThumbnailView: View {
                 .foregroundStyle(isSelected ? ColorPalette.text_01 : ColorPalette.text_03)
                 .background(
                     Circle()
-                        .fill(isPressed ? ColorPalette.primary : ColorPalette.black_40)
-                        .stroke(isPressed ? ColorPalette.stroke_03 : .clear, style: .init(lineWidth: 1))
+                        .fill(isSelected ? ColorPalette.primary : ColorPalette.black_40)
+                        .stroke(isSelected ? ColorPalette.stroke_03 : .clear, style: .init(lineWidth: 1))
                         .frame(width: 20, height: 20)
                 )
                 .padding(10)
