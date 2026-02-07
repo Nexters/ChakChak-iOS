@@ -173,13 +173,13 @@ struct MainView: View {
     }
     
     private func handlePermissionStatus(_ status: PHAuthorizationStatus) {
-        if !permissionManager.hasPermission {
-            isNeedPermission = true
+        if status == .notDetermined {
+            permissionManager.requestPhotoLibraryPermission()
             return
         }
         
-        if status == .notDetermined {
-            permissionManager.requestPhotoLibraryPermission()
+        if !permissionManager.hasPermission {
+            isNeedPermission = true
             return
         }
         
