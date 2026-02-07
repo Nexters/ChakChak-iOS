@@ -38,6 +38,9 @@ struct MainView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
+                Image("watermark_icon")
+                    .resizable()
+                    .frame(width: 64, height: 22)
                 Spacer()
                 Button {
                     // TODO: 설정 화면으로 이동
@@ -62,6 +65,7 @@ struct MainView: View {
                     Spacer()
                 }
                 .padding(.horizontal, Metric.horizontalPadding)
+                .padding(.top, 24)
                 
                 allPhotoButton {
                     coordinator.push(.photoSelect(isTotal: true, index: nil))
