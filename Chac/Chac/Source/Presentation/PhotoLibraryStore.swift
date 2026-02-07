@@ -35,7 +35,7 @@ final class PhotoLibraryStore: ObservableObject {
             
             self.photos = fetched
             await processClustering()
-            self.isLoading = false
+            
         }
     }
     
@@ -62,6 +62,7 @@ final class PhotoLibraryStore: ObservableObject {
                 
                 try? await Task.sleep(for: .seconds(0.2))
             }
+            self.isLoading = false
         }
     }
 }

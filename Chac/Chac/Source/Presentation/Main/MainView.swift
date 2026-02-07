@@ -88,7 +88,7 @@ struct MainView: View {
                 .padding(.top, 28)
                 .padding(.horizontal, Metric.horizontalPadding)
                 
-                if photoLibraryStore.isLoading {
+                if photoLibraryStore.clusters.isEmpty {
                     LoadingView()
                 } else {
                     content

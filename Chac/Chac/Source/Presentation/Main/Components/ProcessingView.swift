@@ -45,9 +45,13 @@ struct ProcessingView: View {
     }
     
     private func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: Metric.timerInterval, repeats: true) { _ in
+        let newTimer = Timer(timeInterval: Metric.timerInterval, repeats: true) { _ in
             highLightedIndex = (highLightedIndex + 1) % 3
         }
+        
+        RunLoop.main.add(newTimer, forMode: .common)
+        
+        self.timer = newTimer
     }
     
     private func stopTimer() {
