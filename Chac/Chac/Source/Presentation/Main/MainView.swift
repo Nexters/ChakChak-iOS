@@ -46,6 +46,7 @@ struct MainView: View {
                         .scaledToFit()
                         .frame(width: Metric.settingIconSize, height: Metric.settingIconSize)
                 }
+                .hidden()   // FIXME: 추후에 사용
             }
             .frame(height: 52)
             .padding(.horizontal, Metric.horizontalPadding)
