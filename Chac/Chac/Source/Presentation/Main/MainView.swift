@@ -34,6 +34,7 @@ struct MainView: View {
     @EnvironmentObject private var permissionManager: DefaultPhotoLibraryPermissionManager
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
     @State private var isNeedPermission: Bool = false
+    
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -63,7 +64,7 @@ struct MainView: View {
                 .padding(.horizontal, Metric.horizontalPadding)
                 
                 allPhotoButton {
-                    // TODO: 모든사진 화면이동
+                    coordinator.push(.photoSelect(isTotal: true, index: nil))
                 }
                 
                 HStack {
@@ -118,7 +119,7 @@ struct MainView: View {
                     VStack {
                         ForEach(Array(photoLibraryStore.clusters.enumerated()), id: \.element.id) { index, cluster in
                             Button {
-                                coordinator.push(.photoSelect(index: index))
+                                coordinator.push(.photoSelect(isTotal: false, index: index))
                             } label: {
                                 ClusterCell(
                                     viewModel: cluster.toViewModel(),
