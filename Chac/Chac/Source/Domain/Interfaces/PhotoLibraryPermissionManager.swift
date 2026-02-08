@@ -11,5 +11,4 @@ protocol PhotoLibraryPermissionManager {
     func checkPermissionStatus()
     func requestPhotoLibraryPermission()
     func openSettings()
-    func openPhotosApp()
 }

@@ -111,7 +111,7 @@ struct PhotoSelectView: View {
                         .onTapGesture {
                             toggleSelection(for: phAsset)
                         }
-                        .onLongPressGesture(minimumDuration: 0.3) {
+                        .onLongPressGesture(minimumDuration: 0.15) {
                             let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
                             impactFeedback.impactOccurred()
                             longPressedAsset = phAsset
@@ -161,6 +161,7 @@ struct PhotoSelectView: View {
                 } label: {
                     Image("back_icon")
                 }
+                .buttonStyle(.plain)
             }
         }
         .customPopup(

@@ -45,9 +45,4 @@ final class DefaultPhotoLibraryPermissionManager: NSObject,
         }
     }
     
-    func openPhotosApp() {
-        if let url = URL(string: "photos-redirect://") {
-            UIApplication.shared.open(url)
-        }
-    }
 }

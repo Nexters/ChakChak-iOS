@@ -11,7 +11,6 @@ struct PhotoSaveView: View {
     
     private enum Strings {
         static let completeSave = "저장 완료"
-        static let moveToGallery = "갤러리로"
         static let moveToPhotoList = "메인으로"
         static let photoCountFormat = "총 %d장의 사진이 포함된 앨범을 \n갤러리에 저장했어요!"
     }
@@ -62,25 +61,13 @@ struct PhotoSaveView: View {
             Spacer()
             Spacer()
             
-            HStack(spacing: 8) {
-                
-                moveButton(
-                    title: Strings.moveToGallery,
-                    titleColor: ColorPalette.text_btn_02,
-                    backgroundColor: ColorPalette.sub_04
-                ) {
-                    permissionManager.openPhotosApp()
-                }
-                
-                moveButton(
-                    title: Strings.moveToPhotoList,
-                    titleColor: ColorPalette.text_btn_01,
-                    backgroundColor: ColorPalette.primary
-                ) {
-                    dismiss()
-                    coordinator.popToRoot()
-                }
-                
+            moveButton(
+                title: Strings.moveToPhotoList,
+                titleColor: ColorPalette.text_btn_01,
+                backgroundColor: ColorPalette.primary
+            ) {
+                dismiss()
+                coordinator.popToRoot()
             }
         }
         .padding(.horizontal, 20)

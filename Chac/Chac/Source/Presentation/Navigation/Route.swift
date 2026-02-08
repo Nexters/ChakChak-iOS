@@ -9,5 +9,5 @@ import Foundation
 
 enum Route: Hashable {
     case main
-    case photoSelect(index: Int)
+    case photoSelect(isTotal: Bool, index: Int?)
 }

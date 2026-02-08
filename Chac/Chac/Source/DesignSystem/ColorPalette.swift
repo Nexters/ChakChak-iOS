@@ -37,6 +37,9 @@ enum ColorPalette {
     static let black_70 = Color(hex: 0x000000).opacity(0.7)
     static let black_40 = Color(hex: 0x000000).opacity(0.4)
     
+    static let point_01 = Color(hex: 0x14BCCC)
+    static let point_02 = Color(hex: 0xFC66FF)
+    
     static let etc = Color(hex: 0x666666)
     static let splash = Color(hex: 0x6B28E5)
 }

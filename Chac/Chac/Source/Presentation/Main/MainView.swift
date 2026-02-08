@@ -34,9 +34,13 @@ struct MainView: View {
     @EnvironmentObject private var permissionManager: DefaultPhotoLibraryPermissionManager
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
     @State private var isNeedPermission: Bool = false
+    
     var body: some View {
         VStack(spacing: 0) {
             HStack {
+                Image("watermark_icon")
+                    .resizable()
+                    .frame(width: 64, height: 22)
                 Spacer()
                 Button {
                     // TODO: 설정 화면으로 이동
@@ -46,6 +50,7 @@ struct MainView: View {
                         .scaledToFit()
                         .frame(width: Metric.settingIconSize, height: Metric.settingIconSize)
                 }
+                .hidden()   // FIXME: 추후에 사용
             }
             .frame(height: 52)
             .padding(.horizontal, Metric.horizontalPadding)
@@ -60,9 +65,10 @@ struct MainView: View {
                     Spacer()
                 }
                 .padding(.horizontal, Metric.horizontalPadding)
+                .padding(.top, 24)
                 
                 allPhotoButton {
-                    // TODO: 모든사진 화면이동
+                    coordinator.push(.photoSelect(isTotal: true, index: nil))
                 }
                 
                 HStack {
@@ -116,12 +122,14 @@ struct MainView: View {
                 ScrollView {
                     VStack {
                         ForEach(Array(photoLibraryStore.clusters.enumerated()), id: \.element.id) { index, cluster in
-							ClusterCell(
-                            	viewModel: cluster.toViewModel(),
-								backgroundColor: generateColor(at: index),
-                            	onOrganizeTap: { coordinator.push(.photoSelect(index: index)) },
-                            	onSaveTap: { savePhotos(cluster) }
-                        	)
+                            Button {
+                                coordinator.push(.photoSelect(isTotal: false, index: index))
+                            } label: {
+                                ClusterCell(
+                                    viewModel: cluster.toViewModel(),
+                                    backgroundColor: generateColor(at: index)
+                                )
+                            }
                         }
                     }
                     .padding(.horizontal, Metric.horizontalPadding)
@@ -178,11 +186,10 @@ struct MainView: View {
     private func generateColor(at index: Int) -> Color {
         let colorCycle = [
             ColorPalette.primary,
-            ColorPalette.sub_01,
-            ColorPalette.sub_02,
-            ColorPalette.sub_03
+            ColorPalette.point_01,
+            ColorPalette.point_02
         ]
-        return colorCycle[index % 4]
+        return colorCycle[index % colorCycle.count]
 	}
 
     private func savePhotos(_ cluster: PhotoCluster) {

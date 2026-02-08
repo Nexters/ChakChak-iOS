@@ -31,6 +31,7 @@ enum ChacScale {
     case toast_body
     case sub_number
     case splash_name
+    case date_text
 
     func generateFont() -> Font {
         switch self {
@@ -49,6 +50,7 @@ enum ChacScale {
         case .toast_body:    return Font.custom("Pretendard-Regular", size: 14)
         case .sub_number:    return Font.custom("Montserrat-SemiBold", size: 13)
         case .splash_name:   return Font.custom("Montserrat-SemiBold", size: 38)
+        case .date_text:     return Font.custom("Pretendard-Medium", size: 13)
         }
     }
 }

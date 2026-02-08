@@ -24,7 +24,7 @@ struct PhotoDetailView: View {
         
         VStack {
             HStack {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .chacFont(.sub_title_03)
                         .foregroundStyle(ColorPalette.text_02)
@@ -56,11 +56,7 @@ struct PhotoDetailView: View {
                             .resizable()
                             .scaledToFit()
                     } else {
-                        RoundedRectangle(cornerRadius: 5)
-                            .fill(.white)
-                            .overlay {
-                                ProgressView()
-                            }
+                        ProgressView()
                     }
                 }
             }
