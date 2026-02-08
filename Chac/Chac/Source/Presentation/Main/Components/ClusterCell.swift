@@ -43,6 +43,7 @@ struct ClusterCell: View {
                     .chacFont(.headline_02)
                     .foregroundStyle(ColorPalette.text_01)
                     .multilineTextAlignment(.leading)
+                    .lineLimit(2)
                 Text("\(DateFormatter.yyyyMMdd.string(from: viewModel.thumbnailPHAsset.creationDate ?? Date()))")
                     .chacFont(.date_text)
                     .foregroundStyle(ColorPalette.white_80)
